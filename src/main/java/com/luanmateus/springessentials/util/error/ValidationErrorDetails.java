@@ -3,7 +3,9 @@ package com.luanmateus.springessentials.util.error;
 import lombok.Getter;
 
 @Getter
-public class ResourceNotFoundDetails extends ErrorDetail {
+public class ValidationErrorDetails extends ErrorDetail {
+    private String field;
+    private String fieldMessage;
 
     public static final class Builder {
         private String title;
@@ -11,6 +13,8 @@ public class ResourceNotFoundDetails extends ErrorDetail {
         private String detail;
         private Long timestamp;
         private String developerMessage;
+        private String field;
+        private String fieldMessage;
 
         private Builder() {
         }
@@ -44,16 +48,28 @@ public class ResourceNotFoundDetails extends ErrorDetail {
             return this;
         }
 
-        public ResourceNotFoundDetails build() {
-            ResourceNotFoundDetails resourceNotFoundDetails = new ResourceNotFoundDetails();
+        public Builder field(String field) {
+            this.field = field;
+            return this;
+        }
 
-            resourceNotFoundDetails.setDeveloperMessage(this.developerMessage);
-            resourceNotFoundDetails.setTimestamp(this.timestamp);
-            resourceNotFoundDetails.setDetail(this.detail);
-            resourceNotFoundDetails.setTitle(this.title);
-            resourceNotFoundDetails.setStatus(this.status);
+        public Builder fieldMessage(String fieldMessage) {
+            this.fieldMessage = fieldMessage;
+            return this;
+        }
 
-            return resourceNotFoundDetails;
+        public ValidationErrorDetails build() {
+            ValidationErrorDetails validationErrorDetails = new ValidationErrorDetails();
+
+            validationErrorDetails.setTitle(title);
+            validationErrorDetails.setStatus(status);
+            validationErrorDetails.setDetail(detail);
+            validationErrorDetails.setTimestamp(timestamp);
+            validationErrorDetails.setDeveloperMessage(developerMessage);
+            validationErrorDetails.fieldMessage = fieldMessage;
+            validationErrorDetails.field = field;
+
+            return validationErrorDetails;
         }
     }
 }
