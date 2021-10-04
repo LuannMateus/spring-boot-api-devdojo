@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,7 +23,8 @@ public class StudentController {
     StudentService studentService;
 
     @GetMapping("/students")
-    public ResponseEntity<Page<Student>> findAll(Pageable pageable) {
+        public ResponseEntity<Page<Student>> findAll(Pageable pageable, @AuthenticationPrincipal UserDetails userDetails) {
+        System.out.println(userDetails);
         final Page<Student> students = studentService.findAll(pageable);
 
         return ResponseEntity.ok().body(students);
@@ -58,6 +62,7 @@ public class StudentController {
     }
 
     @DeleteMapping("/students/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
         studentService.deleteById(id);
 
