@@ -1,9 +1,15 @@
 package com.luanmateus.springessentials.util.error;
 
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
-public class ResourceNotFoundDetails extends ErrorDetails {
+@Data
+public class ErrorDetails {
+    private String title;
+    private Integer status;
+    private String detail;
+    private Long timestamp;
+    private String developerMessage;
+
 
     public static final class Builder {
         private String title;
@@ -44,16 +50,14 @@ public class ResourceNotFoundDetails extends ErrorDetails {
             return this;
         }
 
-        public ResourceNotFoundDetails build() {
-            ResourceNotFoundDetails resourceNotFoundDetails = new ResourceNotFoundDetails();
-
-            resourceNotFoundDetails.setDeveloperMessage(this.developerMessage);
-            resourceNotFoundDetails.setTimestamp(this.timestamp);
-            resourceNotFoundDetails.setDetail(this.detail);
-            resourceNotFoundDetails.setTitle(this.title);
-            resourceNotFoundDetails.setStatus(this.status);
-
-            return resourceNotFoundDetails;
+        public ErrorDetails build() {
+            ErrorDetails errorDetails = new ErrorDetails();
+            errorDetails.setTitle(title);
+            errorDetails.setStatus(status);
+            errorDetails.setDetail(detail);
+            errorDetails.setTimestamp(timestamp);
+            errorDetails.setDeveloperMessage(developerMessage);
+            return errorDetails;
         }
     }
 }

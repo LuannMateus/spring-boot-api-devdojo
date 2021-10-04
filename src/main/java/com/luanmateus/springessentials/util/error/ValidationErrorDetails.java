@@ -3,7 +3,7 @@ package com.luanmateus.springessentials.util.error;
 import lombok.Getter;
 
 @Getter
-public class ValidationErrorDetails extends ErrorDetail {
+public class ValidationErrorDetails extends ErrorDetails {
     private String field;
     private String fieldMessage;
 
