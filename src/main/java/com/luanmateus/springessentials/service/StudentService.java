@@ -4,6 +4,8 @@ import com.luanmateus.springessentials.model.Student;
 import com.luanmateus.springessentials.repository.StudentRepository;
 import com.luanmateus.springessentials.util.error.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,8 +17,8 @@ public class StudentService {
     @Autowired
     StudentRepository studentRepository;
 
-    public List<Student> findAll() {
-        return studentRepository.findAll();
+    public Page<Student> findAll(Pageable pageable) {
+        return studentRepository.findAll(pageable);
     }
 
     public Student findById(Long id) throws ResourceNotFoundException {

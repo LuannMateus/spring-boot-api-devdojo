@@ -4,6 +4,8 @@ import com.luanmateus.springessentials.model.Student;
 import com.luanmateus.springessentials.service.StudentService;
 import com.luanmateus.springessentials.util.error.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +20,8 @@ public class StudentController {
     StudentService studentService;
 
     @GetMapping("/students")
-    public ResponseEntity<List<Student>> findAll() {
-        final List<Student> students = studentService.findAll();
+    public ResponseEntity<Page<Student>> findAll(Pageable pageable) {
+        final Page<Student> students = studentService.findAll(pageable);
 
         return ResponseEntity.ok().body(students);
     }
