@@ -1,26 +1,26 @@
 package com.luanmateus.springessentials.repository;
 
 import com.luanmateus.springessentials.model.Student;
+import com.luanmateus.springessentials.util.StudentFactory;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.TransactionSystemException;
 
 @SpringBootTest
-@RunWith(SpringJUnit4ClassRunner.class)
 @DisplayName("#StudentRepository")
-class StudentRepositoryTest {
+public class StudentRepositoryTest {
 
     @Autowired
     private StudentRepository studentRepository;
 
     @Test
     @DisplayName("Should persist an student in database")
-    void savePersistStudentWhenSuccessful() {
-        Student studentToBeSaved = studentFactory();
+    public void savePersistStudentWhenSuccessful() {
+        Student studentToBeSaved = StudentFactory.createStudentToBeSaved();
 
         Student studentSaved = this.studentRepository.save(studentToBeSaved);
 
@@ -30,7 +30,12 @@ class StudentRepositoryTest {
         Assertions.assertThat(studentSaved.getEmail()).isEqualTo(studentToBeSaved.getEmail());
     }
 
-    private Student studentFactory() {
-        return new Student("John", "john@mail.com");
+    @Test
+    @DisplayName("Should throw ConstraintViolationException when student name is empty")
+    public void saveThrowsConstraintViolationExceptionWhenStudentNameIsEmpty() {
+        Student studentToBeSaved = StudentFactory.createInvalidStudent();
+
+        Assertions.assertThatExceptionOfType(TransactionSystemException.class)
+                .isThrownBy(() -> studentRepository.save(studentToBeSaved));
     }
 }

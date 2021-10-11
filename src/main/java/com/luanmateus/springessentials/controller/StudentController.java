@@ -25,7 +25,6 @@ public class StudentController {
 
     @GetMapping("/protected/students")
     public ResponseEntity<Page<Student>> findAll(Pageable pageable, @AuthenticationPrincipal UserDetails userDetails) {
-        System.out.println(userDetails);
         final Page<Student> students = studentService.findAll(pageable);
 
         return ResponseEntity.ok().body(students);
